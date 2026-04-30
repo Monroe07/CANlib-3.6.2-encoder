@@ -985,6 +985,8 @@ struct __attribute__((packed)) CanMessageDriversStatus
 		return 2 * sizeof(uint16_t) + numDriversReported * ((hasClosedLoopData) ? sizeof(closedLoopData[0]) : sizeof(openLoopData[0]));
 	}
 
+
+
 	void SetStandardFields(unsigned int numReported, bool closedLoop) noexcept
 	{
 		numDriversReported = numReported;
@@ -993,6 +995,19 @@ struct __attribute__((packed)) CanMessageDriversStatus
 
 	void ClearReservedFields() noexcept { zero = 0; zero2 = 0; }
 };
+
+struct __attribute__((packed)) CanMessageClosedLoopEncoderPositions
+	{
+		static constexpr CanMessageType messageType = CanMessageType::closedLoopEncoderPositionsReport;
+
+		uint16_t numDriversReported;
+		int32_t encoderPosition[5];
+
+		size_t GetActualDataLength() const noexcept
+		{
+			return sizeof(numDriversReported) + numDriversReported * sizeof(encoderPosition[0]);
+		}
+	};
 
 // This has to be declared outside struct CanMessageFilamentMonitorsStatusNew to avoid having to include this file in FilamentMonitor.h
 struct __attribute__((packed)) FilamentMonitorDataNew2
@@ -1220,6 +1235,9 @@ union CanMessage
 	CanMessageReadInputsReply readInputsReply;
 	CanMessageBoardStatus boardStatus;
 	CanMessageDriversStatus driversStatus;
+
+	CanMessageClosedLoopEncoderPositions closedLoopEncoderPositions;
+
 	CanMessageFilamentMonitorsStatusNew2 filamentMonitorsStatusNew2;
 	CanMessageCreateFilamentMonitor createFilamentMonitor;
 	CanMessageDeleteFilamentMonitor deleteFilamentMonitor;

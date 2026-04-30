@@ -133,6 +133,10 @@ enum class CanMessageType : uint16_t
 	//unused_was_filamentMonitorsStatusReportNew = 4527,
 	filamentMonitorsStatusReportNew2 = 4528,
 
+	// Duet Closed Loop Encoder count
+	closedLoopEncoderPositionsReport = 4529,
+
+
 	// Firmware updates
 	firmwareBlockRequest = 5000,
 	firmwareBlockResponse = 5001,
